@@ -45,8 +45,12 @@ static void log_string(int level, char *s)
 void init_log(char * name, int level)
 {
 #ifdef HAVE_SYSLOG_H
+	int option = LOG_PID|LOG_CONS|LOG_NOWAIT;
+
 	log_level = level;
-	openlog(name, LOG_PID|LOG_CONS|LOG_NOWAIT, LOG_DAEMON);
+	if (log_level > 0)
+		option |= LOG_PERROR;
+	openlog(name, option, LOG_DAEMON);
 #endif
 }
 
